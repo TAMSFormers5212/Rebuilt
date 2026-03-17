@@ -8,6 +8,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,15 +21,16 @@ public class Robot extends TimedRobot {
 
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
     private final Drive drive = new Drive();
+    private final Shooter shooter = new Shooter();
 
     private final CommandXboxController driverController = new CommandXboxController(0);
     private final CommandXboxController operatorController = new CommandXboxController(1);
 
     public Robot() {
-        new Trigger(m_exampleSubsystem::exampleCondition)
-                .onTrue(new ExampleCommand(m_exampleSubsystem));
-        
-        driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+        // new Trigger(m_exampleSubsystem::exampleCondition)
+        // .onTrue(new ExampleCommand(m_exampleSubsystem));
+        operatorController.a().onTrue(shooter.start());
+        operatorController.b().onTrue(shooter.stop());
     }
 
     @Override
@@ -67,6 +69,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
+        CommandScheduler.getInstance().schedule(shooter.stop());
     }
 
     @Override
