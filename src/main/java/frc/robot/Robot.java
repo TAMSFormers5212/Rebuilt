@@ -25,13 +25,9 @@ public class Robot extends TimedRobot {
     private final CommandXboxController operatorController = new CommandXboxController(1);
 
     public Robot() {
-        configureBindings();
-    }
-
-    private void configureBindings() {
         new Trigger(m_exampleSubsystem::exampleCondition)
                 .onTrue(new ExampleCommand(m_exampleSubsystem));
-
+        
         driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     }
 
@@ -57,14 +53,6 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void disabledInit() {
-    }
-
-    @Override
-    public void disabledPeriodic() {
-    }
-
-    @Override
     public void autonomousInit() {
         m_autonomousCommand = getAutonomousCommand();
 
@@ -75,6 +63,14 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
+    }
+
+    @Override
+    public void disabledInit() {
+    }
+
+    @Override
+    public void disabledPeriodic() {
     }
 
     public Command getAutonomousCommand() {
