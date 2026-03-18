@@ -17,7 +17,7 @@ public class Drive extends SubsystemBase {
     public Drive() {
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
         try {
-            swerveDrive = new SwerveParser(Filesystem.getDeployDirectory()).createSwerveDrive(4);
+            swerveDrive = new SwerveParser(Filesystem.getDeployDirectory()).createSwerveDrive(10);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
