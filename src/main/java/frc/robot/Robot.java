@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
@@ -27,8 +28,16 @@ public class Robot extends TimedRobot {
     public Robot() {
         // new Trigger(m_exampleSubsystem::exampleCondition)
         // .onTrue(new ExampleCommand(m_exampleSubsystem));
-        operatorController.a().onTrue(shooter.start());
-        operatorController.b().onTrue(shooter.stop());
+        operatorController.a().onTrue(shooter.startShooter());
+        operatorController.b().onTrue(shooter.stopShooter());
+
+        driverController.rightTrigger().onTrue(shooter.startTransfer());
+        driverController.rightTrigger().onFalse(shooter.stopTransfer());
+        driverController.rightBumper().onTrue(shooter.startShooter());
+        driverController.rightBumper().onFalse(shooter.stopShooter());
+
+        
+
     }
 
     @Override
@@ -67,7 +76,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-        CommandScheduler.getInstance().schedule(shooter.stop());
+        CommandScheduler.getInstance().schedule(shooter.stopShooter());
     }
 
     @Override
