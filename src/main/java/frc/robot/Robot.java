@@ -8,6 +8,7 @@ import frc.robot.commands.Autos;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,6 +22,7 @@ public class Robot extends TimedRobot {
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
     private final Drive drive = new Drive();
     private final Shooter shooter = new Shooter();
+    private final Intake intake = new Intake();
 
     private final CommandXboxController driverController = new CommandXboxController(0);
     private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -36,7 +38,11 @@ public class Robot extends TimedRobot {
         driverController.rightBumper().onTrue(shooter.startShooter());
         driverController.rightBumper().onFalse(shooter.stopShooter());
 
-        
+        driverController.leftTrigger().onTrue(intake.startIntake());
+        driverController.leftTrigger().onFalse(intake.stopIntake());
+        driverController.leftStick().onTrue(intake.toggleIntake());
+
+
 
     }
 
