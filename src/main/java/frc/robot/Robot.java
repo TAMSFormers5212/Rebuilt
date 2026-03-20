@@ -9,15 +9,22 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
+    private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
     private final Drive drive = new Drive();
@@ -28,6 +35,10 @@ public class Robot extends TimedRobot {
     private final CommandXboxController operatorController = new CommandXboxController(1);
 
     public Robot() {
+        DriverStation.silenceJoystickConnectionWarning(true);
+        autoChooser.setDefaultOption("None", Commands.none());
+        SmartDashboard.putData(autoChooser);
+
         // new Trigger(m_exampleSubsystem::exampleCondition)
         // .onTrue(new ExampleCommand(m_exampleSubsystem));
         operatorController.a().onTrue(shooter.startShooter());
@@ -41,9 +52,6 @@ public class Robot extends TimedRobot {
         driverController.leftTrigger().onTrue(intake.startIntake());
         driverController.leftTrigger().onFalse(intake.stopIntake());
         driverController.leftStick().onTrue(intake.toggleIntake());
-
-
-
     }
 
     @Override
@@ -90,6 +98,6 @@ public class Robot extends TimedRobot {
     }
 
     public Command getAutonomousCommand() {
-        return Autos.exampleAuto(m_exampleSubsystem);
+        return autoChooser.getSelected();
     }
 }

@@ -24,8 +24,8 @@ public class Shooter extends SubsystemBase {
                 PersistMode.kPersistParameters);
         transferMotor = new SparkMax(20, MotorType.kBrushless);
         transferMotor.configure(new SparkMaxConfig()
-                .follow(shooterMotor, true)
-                .idleMode(IdleMode.kCoast),
+                .idleMode(IdleMode.kCoast)
+                .inverted(false),
                 ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
     }
