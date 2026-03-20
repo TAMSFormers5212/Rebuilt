@@ -4,9 +4,7 @@
 
 package frc.robot;
 
-import frc.robot.commands.Autos;
 import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 
@@ -20,13 +18,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
     private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
-    private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
     private final Drive drive = new Drive();
     private final Shooter shooter = new Shooter();
     private final Intake intake = new Intake();
@@ -90,7 +86,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-        CommandScheduler.getInstance().schedule(shooter.stopShooter());
+        CommandScheduler.getInstance().schedule(
+                Commands.parallel(
+                    shooter.stopShooter(),
+                    shooter.stopTransfer(),
+                    intake.stopIntake(),
+                    intake.stopLinkage()
+                ));
     }
 
     @Override

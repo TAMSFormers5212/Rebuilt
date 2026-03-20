@@ -10,7 +10,7 @@
     "canbus": null
   },
   "encoder": {
-    "type": "analog",
+    "type": "dutycycle",
     "id": 1,
     "canbus": null
   },
